@@ -1,6 +1,9 @@
 <?php
 
     class Crud extends PDO {
+        /**
+         * Connexion à la bd
+         */
         public function __construct() {
             parent::__construct(    
                 "mysql:host=localhost; dbname=tp1-boatsharing",
@@ -9,7 +12,12 @@
             );
         }
 
-
+        /**
+         * Insère une rangée à une table de la bd. Retourne le id de l'insertion en cas de succès et l'erreur en cas d'échec.
+         * @param string $table
+         * @param array $data
+         * @return le id si succès, le message d'erreur si échec
+         */
         public function insert($table, $data) {
             $champ = implode(", ", array_keys($data));
             $valeur = ":".implode(", :", array_keys($data));
@@ -29,7 +37,13 @@
             return $sql;
         }
 
-
+        /**
+         * Récupère et retourne l'ensemble des rangées/colonnes de la table reçu en paramètre. Paramètres optionnels permettant de choisir l'ordre des rangées.
+         * @param string $table
+         * @param string $orderby, optionnel
+         * @param string $order, optionnel (ASC ou DESC)
+         * @return array $query->fetchAll();
+         */
         public function select($table, $orderby = null, $order = null) {
             if ($orderby == null) {
                 $sql = "SELECT * FROM $table";
@@ -41,7 +55,14 @@
             return $query->fetchAll();
         }
 
-
+        /**
+         * Modifie les valeurs associées à une rangée d'une table. Retourne l'id si succès, l'erreur si échec.
+         * @param string $table
+         * @param array $data
+         * @param string $column
+         * @param string $id
+         * @return  $id si succès, message d'Erreur si echec
+         */
         public function update($table, $data, $column, $id) {
             $requestedUpdates = null;
             foreach ($data as $key=>$value) {
@@ -63,7 +84,12 @@
             }
         }
 
-
+        /**
+         * Supprime une rangée d'une table
+         * @param string $table
+         * @param int $id à supprimer
+         * @return $query->errorInfo() si échec
+         */
         public function delete($table, $id) {
             $sql = "DELETE FROM $table WHERE id = :$id";
             $query = $this->prepare($sql);
@@ -75,7 +101,13 @@
             }
         }
 
-
+        /**
+         * Sélectionne une rangée d'une table à partir du id.
+         * @param string $table
+         * @param string $column
+         * @param string $id
+         * @return array $query->fetch()
+         */
         public function selectById($table, $column, $id) {
             $sql = "SELECT * FROM $table WHERE $column = :$column";
             $query = $this->prepare($sql);

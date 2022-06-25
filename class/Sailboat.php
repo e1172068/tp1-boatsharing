@@ -12,10 +12,16 @@
             $this->typeId = $typeId;
         }
 
+        /**
+         * Getter pour les voiliers
+         */
         public function get($p) {
             return $this->$p;
         }
 
+        /**
+         * Récupère les informations sur le type de bateau contenues dans la table "sailboat_type".
+         */
         public function getTypeDetails() {
             $crud = new Crud;
             $select = $crud->selectById("sailboat_type", "id", $this->typeId);

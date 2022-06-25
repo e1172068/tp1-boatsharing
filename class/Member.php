@@ -16,14 +16,23 @@
             $this->phone = $phone;
         }
 
+        /**
+         * Retourne le nom complet du membre
+         */
         public function getFullName() {
             return $this->firstName . " " . $this->lastName;
         }
 
+        /**
+         * Getter pour les propriétés de membre
+         */
         public function get($p) {
             return $this->$p;
         }
 
+        /**
+         * Retourne le nombre de réservations faites par le membre.
+         */
         public function countReservations() {
             $crud = new Crud;
             $id = $this->id;
